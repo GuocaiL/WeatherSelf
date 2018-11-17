@@ -60,6 +60,7 @@ import cn.pku.edu.liguocai.adapter.GuideAdapter;
 	private ViewPager viewPage;
 	private List<View> views;
 	private GuideAdapter guideAdapter;
+	public static String quanJuCode="101010100";
 	
 	//高德定位
 	//声明AMapLocationClient类对象
@@ -328,43 +329,7 @@ import cn.pku.edu.liguocai.adapter.GuideAdapter;
     	mLocationOption.setLocationCacheEnable(false);
     	//给定位客户端对象设置定位参数
     	mLocationClient.setLocationOption(mLocationOption);
-        
-//        //百度定位
-//        mLocationClient = new LocationClient(getApplicationContext());     
-//	    //声明LocationClient类
-//	    mLocationClient.registerLocationListener(myListener);    
-//	    //注册监听函数
-//	    locationOption = new LocationClientOption();
-//	  //可选，设置是否需要地址信息，默认不需要
-//	    locationOption.setIsNeedAddress(true);
-//	  //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-//	   // locationOption.setAddrType("all");
-//	    locationOption.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy); 
-//	    //可选，默认gcj02，设置返回的定位结果坐标系，如果配合百度地图使用，建议设置为bd09ll;
-//	    locationOption.setCoorType("bd09ll");
-//	    //可选，默认0，即仅定位一次，设置发起连续定位请求的间隔需要大于等于1000ms才是有效的
-//	    locationOption.setScanSpan(0);
-//	   
-//	    //可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
-//	    locationOption.setLocationNotify(true);
-//	    //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
-//	    locationOption.setIgnoreKillProcess(false); 
-//	    //可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-//	    locationOption.setIsNeedLocationDescribe(true);
-//	    //可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
-//	    locationOption.setIsNeedLocationPoiList(true);
-//	    //可选，默认false，设置是否收集CRASH信息，默认收集
-//	    locationOption.SetIgnoreCacheException(false); 
-//	    //可选，默认false，设置是否开启Gps定位
-//	    locationOption.setOpenGps(true); 
-//	    locationOption.setEnableSimulateGps(false);
-//	   
-//        mLocationClient.setLocOption(locationOption);
-//	    //mLocationClient为第二步初始化过的LocationClient对象
-//	    //需将配置好的LocationClientOption对象，通过setLocOption方法传递给LocationClient对象使用
-//	    //更多LocationClientOption的配置，请参照类参考中LocationClientOption类的详细说明
-        		        
-        
+    	
         mUpdateBtn=(ImageView) findViewById(R.id.title_update_btn);
         mUpdateBtn.setOnClickListener(this);
         initView();
@@ -374,6 +339,10 @@ import cn.pku.edu.liguocai.adapter.GuideAdapter;
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
             Log.d("myWeather", "网络OK");
             Toast.makeText(MainActivity.this,"网络OK！", Toast.LENGTH_LONG).show();
+            if(mLocationClient.isStarted()) {
+				mLocationClient.stopLocation();
+			}
+			mLocationClient.startLocation();
         }else
         {
             Log.d("myWeather", "网络挂了");
@@ -597,7 +566,7 @@ import cn.pku.edu.liguocai.adapter.GuideAdapter;
 		switch(view.getId()){
 		case R.id.title_update_btn:
 			SharedPreferences sharedPrefences=getSharedPreferences("config",MODE_PRIVATE);
-			String cityCode=sharedPrefences.getString("main_city_code", "101010100");
+			String cityCode=sharedPrefences.getString("main_city_code", quanJuCode);
 			Log.d("myWeather",cityCode);						
 			
 			if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
@@ -669,7 +638,10 @@ import cn.pku.edu.liguocai.adapter.GuideAdapter;
 			    	while(it.hasNext()){
 			    		  Entry entry = (Entry)it.next();
 			    	      if(entry.getKey().toString().contains(amapLocation.getCity())||amapLocation.getCity().contains(entry.getKey().toString()))
-			    	      queryWeatherCode(entry.getValue().toString());
+			    	      {
+			    	    	  quanJuCode=entry.getValue().toString();
+			    	    	  queryWeatherCode(quanJuCode);
+			    	      }
 			    	}
 			 }else {
 			    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。

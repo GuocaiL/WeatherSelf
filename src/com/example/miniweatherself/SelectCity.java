@@ -55,7 +55,8 @@ public class SelectCity extends Activity implements OnClickListener {
 				//City city=filterDateList.get(position);
 				City city=filterDateList.get(position);
 				Intent i =new Intent();
-				i.putExtra("cityCode",city.getNumber());
+				MainActivity.quanJuCode=city.getNumber();
+				i.putExtra("cityCode",MainActivity.quanJuCode);
 				setResult(RESULT_OK,i);
 				finish();
 			}
@@ -105,7 +106,7 @@ public class SelectCity extends Activity implements OnClickListener {
 		switch (view.getId()){
 		case R.id.title_back:
 			Intent i=new Intent();
-			i.putExtra("cityCode", "101160101");
+			i.putExtra("cityCode", MainActivity.quanJuCode);
 			setResult(RESULT_OK,i);
 			finish();
 			break;

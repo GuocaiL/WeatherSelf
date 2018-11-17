@@ -26,7 +26,7 @@ import android.widget.TextView;
 		// TODO Auto-generated constructor stub	
 		list.clear();
 		for(City city:listCity){
-			list.add(city.getCity().toString()+city.getNumber().toString());
+			list.add(city.getCity().toString());
 		}
 		this.context=context;
 		}	
@@ -34,7 +34,7 @@ import android.widget.TextView;
 	public void updateListView(List<City> listCity)	{
 		list.clear();
 		for(City city:listCity){
-			list.add(city.getCity().toString()+city.getNumber().toString());
+			list.add(city.getCity().toString());
 		}
 		notifyDataSetChanged();
 	}
