@@ -37,7 +37,7 @@
     <application
         android:name="com.pku.edu.liguocai.app.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/yingyong"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity

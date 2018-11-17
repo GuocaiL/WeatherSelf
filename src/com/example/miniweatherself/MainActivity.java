@@ -50,7 +50,7 @@ import cn.pku.edu.liguocai.adapter.GuideAdapter;
 			day2=new TextView[4],day3=new TextView[4],day4=new TextView[4],day5=new TextView[4];
 	private  ImageView[] sixDayImage=new ImageView[6];	 	
 	//private BaiduCityLocation baiduCity=new BaiduCityLocation(this);
-	private ImageView mUpdateBtn;
+	private ImageView mUpdateBtn,title_share;
 	private ImageView mCitySelect,titleLocation;
 	private TextView cityTv,timeTv,humidityTv,weekTv,pmDataTv,pmQualityTv,
 	        temperatureTv,climateTv,windTv,city_name_Tv,currentTemTV;
@@ -124,7 +124,7 @@ import cn.pku.edu.liguocai.adapter.GuideAdapter;
 	    sixDayImage[5]=(ImageView) views.get(1).findViewById(R.id.img6);
 	    
 		
-		
+		title_share=(ImageView) findViewById(R.id.title_share);
         city_name_Tv = (TextView) findViewById(R.id.title_city_name);
         cityTv = (TextView) findViewById(R.id.city);
         timeTv = (TextView) findViewById(R.id.time);
@@ -334,7 +334,8 @@ import cn.pku.edu.liguocai.adapter.GuideAdapter;
         mUpdateBtn.setOnClickListener(this);
         initView();
         mCitySelect.setOnClickListener(this);
-        titleLocation.setOnClickListener(this);               
+        titleLocation.setOnClickListener(this);   
+        title_share.setOnClickListener(this);
         
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
             Log.d("myWeather", "网络OK");
@@ -601,7 +602,15 @@ import cn.pku.edu.liguocai.adapter.GuideAdapter;
 				e.printStackTrace();
 			}finally{						
 			}		
-			break;			
+			break;	
+		case R.id.title_share:
+			Intent intent = new Intent(Intent.ACTION_SEND);
+		    intent.setType("image/*");
+		    intent.putExtra(Intent.EXTRA_SUBJECT,"share");
+		    intent.putExtra(Intent.EXTRA_TEXT,"我在使用鸳鸯天气，你也来试试吧。");
+		    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		    startActivity(Intent.createChooser(intent,getTitle()));
+		    break;
 		}
 		
 	}
